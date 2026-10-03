@@ -16,7 +16,8 @@ function Login({ health, onLogin }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   async function fill() { const credentials = await api('/api/auth/demo-credentials'); setEmail(credentials.email); setPassword(credentials.password)
-      window.setTimeout(() => { const __f = document.querySelector('form'); if (__f) __f.requestSubmit(); }, 60);; setError(''); }
+
+setError(''); }
   async function submit(event) { event.preventDefault(); try { const result = await api('/api/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) }); localStorage.setItem('portfolio_token', result.token); onLogin(); } catch (failure) { setError(failure.message); } }
   return <div className="login"><section className="loginHero"><span className="eyebrow">React · PostgreSQL · OpenRouter</span><h1>{health?.title || 'Loading…'}</h1><p>{health?.tagline || 'Specialized operations intelligence'}</p></section><section className="loginPanel"><form className="loginCard" onSubmit={submit}><h2>Sign in</h2><p className="muted">Access the provisioned PostgreSQL demonstration workspace.</p><div className="demo"><strong>Demo access</strong><span className="muted">Populate a valid local account.</span><button type="button" className="secondary wide" onClick={fill}>Auto Fill Demo Credentials</button></div><label>Email</label><input className="input" type="email" value={email} onChange={event => setEmail(event.target.value)} required/><label>Password</label><input className="input" type="password" value={password} onChange={event => setPassword(event.target.value)} required/><button className="primary wide">Sign in securely</button>{error && <div className="error">{error}</div>}</form></section></div>;
 }
